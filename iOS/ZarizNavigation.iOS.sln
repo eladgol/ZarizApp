@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarizNavigation.iOS", "ZarizNavigation.iOS.csproj", "{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Release|iPhone.ActiveCfg = Release|iPhone
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Release|iPhone.Build.0 = Release|iPhone
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{F0AA2B49-1A31-4495-AACE-0DD5AAA80139}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal
