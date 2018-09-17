@@ -11,7 +11,7 @@ namespace ZarizNavigation
 			if (!IsUserLoggedIn) {
 				MainPage = new NavigationPage (new LoginPage ());
 			} else {
-				MainPage = new NavigationPage (new ZarizNavigation.MainPage ());
+                MainPage = new NavigationPage (new ZarizNavigation.MainPage ());
 			}
 		}
 

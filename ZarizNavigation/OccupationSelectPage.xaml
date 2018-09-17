@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:local="clr-namespace:ZarizNavigation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ZarizNavigation.OccupationSelectPage"
+             Title="סמן תחומי עיסוק" >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="יציאה" Clicked="OnLogoutButtonClicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout x:Name="nMainLayout" BackgroundColor="#f6aa1c">
+            <local:MultiSelectDemo/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

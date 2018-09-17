@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ZarizNavigation.Controls.MultiSelectView"
+             xmlns:local="clr-namespace:ZarizNavigation.Controls" >
+    <ContentView.Content>
+        <ListView x:Name="nListView" ItemsSource="{x:Static local:MultiSelectView.items}"  IsPullToRefreshEnabled="true" Refreshing="OnRefresh">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <!-- ViewCell.ContextActions -->
+                            <!-- CommandParameter is the command to pass to the clicked event handler. Because these are menu items, 
+                            not cells managed by the ListView, CommandParameter is neccesary to determine which 
+                            cell the context action was taken on. -->
+                            <!--MenuItem Clicked="OnMore" Text="More" CommandParameter="{Binding .}" /-->
+                            <!--MenuItem Clicked="OnDelete" Text="Delete" IsDestructive="true" CommandParameter="{Binding .}" /-->
+                        <!-- /ViewCell.ContextActions -->
+                            <BoxView IsVisible="{Binding IsSelected}"
+                                WidthRequest="12" HeightRequest="12"
+                                Color="Red" />
+                            <Label Text="{Binding Data}" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentView.Content>
+</ContentView>

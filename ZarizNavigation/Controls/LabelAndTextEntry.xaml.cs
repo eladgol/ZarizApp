@@ -9,7 +9,19 @@ namespace ZarizNavigation.Controls
         public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(LabelAndTextEntry), default(string), Xamarin.Forms.BindingMode.TwoWay);
         public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(string), typeof(LabelAndTextEntry), default(string), Xamarin.Forms.BindingMode.OneWay);
         public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(LabelAndTextEntry), default(string), Xamarin.Forms.BindingMode.OneWayToSource);
+        public static readonly BindableProperty KeyboardTypeProperty = BindableProperty.Create(nameof(KeyboardType), typeof(Xamarin.Forms.Keyboard), typeof(LabelAndTextEntry), Xamarin.Forms.Keyboard.Text, Xamarin.Forms.BindingMode.TwoWay);
 
+        public Xamarin.Forms.Keyboard KeyboardType
+        {
+            get
+            {
+                return (Xamarin.Forms.Keyboard)GetValue(KeyboardTypeProperty);
+            }
+            set
+            {
+                SetValue(KeyboardTypeProperty, value);
+            }
+        }
         public string Title
         {
             get
@@ -65,9 +77,9 @@ namespace ZarizNavigation.Controls
                     nEntry.IsPassword = true;
                 }
             }
-            if (propertyName == TextProperty.PropertyName)
+            if (propertyName == KeyboardTypeProperty.PropertyName)
             {
-
+                nEntry.Keyboard = KeyboardType;
             }
         }
         public LabelAndTextEntry()

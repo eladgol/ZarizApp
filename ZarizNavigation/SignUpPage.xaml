@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 			 x:Class="ZarizNavigation.SignUpPage"
              xmlns:controls="clr-namespace:ZarizNavigation.Controls"
 			 Title="הרשמה">
 	<ContentPage.Content>
-		<StackLayout VerticalOptions="CenterAndExpand">
+		<StackLayout VerticalOptions="CenterAndExpand" BackgroundColor="#f6aa1c">
             <controls:LabelAndTextEntry x:Name="nUser" Title="שם משתמש" Margin="20, 0"/>
             <controls:LabelAndTextEntry x:Name="nPassword" Title="סיסמה" Margin="20, 0" IsPassword="true"/>
             <controls:LabelAndTextEntry x:Name="nMail" Title="דואר אלקטרוני" Margin="20, 0"/>

@@ -1,11 +1,20 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ZarizNavigation.MainPage" Title="Main Page">
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Logout" Clicked="OnLogoutButtonClicked" />
-	</ContentPage.ToolbarItems>
-	<ContentPage.Content>
-		<StackLayout>
-			<Label Text="Main app content goes here" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-		</StackLayout>
-	</ContentPage.Content>
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ZarizNavigation.MainPage"
+             xmlns:custom="clr-namespace:ZarizNavigation.Controls" xmlns:local="clr-namespace:ZarizNavigation" Title="פרטים">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="יציאה" Clicked="OnLogoutButtonClicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content >
+
+            <StackLayout x:Name="nMainLayout" BackgroundColor="#f6aa1c" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
+                <custom:ProfileBar x:Name="nProfileBar" HeightRequest="110"/>
+                <custom:SwipeWorkerEmployerView VerticalOptions="Start"/>
+                <StackLayout Orientation="Horizontal">
+                        <custom:LabelAndTextEntry x:Name="nFirstNameEntry" Title="שם פרטי" Margin="20, 0"/>
+                        <custom:LabelAndTextEntry x:Name="nLastNameEntry" Title="שם משפחה" Margin="20, 0"/>
+                </StackLayout>
+                <custom:LabelAndTextEntry x:Name="nWage" KeyboardType="Numeric" Title="שכר" Margin="20, 0"/>
+                <custom:LabelAndTextEntry x:Name="nLocation" KeyboardType="Numeric" Title="מיקום" Margin="20, 0"/>
+            </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

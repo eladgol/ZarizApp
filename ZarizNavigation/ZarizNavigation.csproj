@@ -5,13 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="IdentityModel" Version="3.9.0" />
     <PackageReference Include="Xamarin.Auth" Version="1.6.0.2" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Remove="MyPage.xaml" />
+    <EmbeddedResource Remove="MainPage2.xaml" />
+    <EmbeddedResource Remove="Controls\MultiSelectView.xaml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -27,8 +33,19 @@
   <ItemGroup>
     <Compile Remove="SignUpPageCS.cs" />
     <Compile Remove="LoginPageCS.cs" />
+    <Compile Remove="CustomSwitch.cs" />
+    <Compile Remove="MainPageTake2.cs" />
+    <Compile Remove="MainPage2.xaml.cs" />
+    <Compile Remove="Controls\MultiSelectView.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Controls\MultiSelectList\" />
+    <Folder Include="Controls\SwipeListener\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="MainPage3.xaml.cs">
+      <DependentUpon>MainPage3.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

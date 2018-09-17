@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ZarizNavigation.Controls.SwipeWorkerEmployerView">
+    <ContentView.Content>  
+        <RelativeLayout BackgroundColor="#f6aa1c"> 
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
+                <StackLayout Orientation="Horizontal" HeightRequest="50" BackgroundColor="#f6aa1c" Padding="5" HorizontalOptions="Center">
+                    <Label x:Name="nWorker" FontSize="14" TextColor="Black" Text="עובד" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Switch IsToggled="false" x:Name="nSwitch" HorizontalOptions="Center" Toggled="OnToggled"/>
+                    <Label x:Name="nEmployer" FontSize="14" TextColor="Black" Text="מעסיק" HorizontalOptions="End" VerticalOptions="Center" />
+                </StackLayout>
+            </StackLayout>         
+        </RelativeLayout>
+     </ContentView.Content>  
+</ContentView>
