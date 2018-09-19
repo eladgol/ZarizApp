@@ -5,7 +5,6 @@
         <ToolbarItem Text="יציאה" Clicked="OnLogoutButtonClicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content >
-
             <StackLayout x:Name="nMainLayout" BackgroundColor="#f6aa1c" Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
                 <custom:ProfileBar x:Name="nProfileBar" HeightRequest="110"/>
                 <custom:SwipeWorkerEmployerView VerticalOptions="Start"/>

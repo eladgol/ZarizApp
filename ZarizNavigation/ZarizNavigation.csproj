@@ -17,6 +17,7 @@
     <EmbeddedResource Remove="MyPage.xaml" />
     <EmbeddedResource Remove="MainPage2.xaml" />
     <EmbeddedResource Remove="Controls\MultiSelectView.xaml" />
+    <EmbeddedResource Remove="MainPage3.xaml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="MainPage.xaml">
@@ -37,15 +38,12 @@
     <Compile Remove="MainPageTake2.cs" />
     <Compile Remove="MainPage2.xaml.cs" />
     <Compile Remove="Controls\MultiSelectView.xaml.cs" />
+    <Compile Remove="MainPage3.xaml.cs" />
+    <Compile Remove="MainPageCS.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
     <Folder Include="Controls\MultiSelectList\" />
     <Folder Include="Controls\SwipeListener\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="MainPage3.xaml.cs">
-      <DependentUpon>MainPage3.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

@@ -86,7 +86,6 @@ namespace ZarizNavigation
         }
         async Task<Dictionary<string, string>> Login(string username, string password)
         {
-            WebInterface wI = new WebInterface();   
             var values = new Dictionary<string, string>()
             {
                 {"localPassword", password},
@@ -95,7 +94,8 @@ namespace ZarizNavigation
             bool bSuccess = false;
             nActivityIndicator.IsRunning = true;
             nActivityIndicator.IsVisible = true;
-            var res = await wI.MakeGetRequest("/localLogin/", values);
+            var res = await WebInterface.Instance.MakeGetRequest("/localLogin/", values);
+            WebInterface.Instance.SetAuthHeader(username);
             nActivityIndicator.IsRunning = false;
             nActivityIndicator.IsVisible = false;
             try

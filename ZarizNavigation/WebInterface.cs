@@ -10,59 +10,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Net.Http.Headers;
+
 namespace ZarizNavigation
 {
     public class WebInterface
     {
         protected string mCSRF = String.Empty;
+        protected string mSessionID = String.Empty;
+        public HttpClient mClient;
+        public CookieContainer mCookieContainer;
+        public HttpClientHandler mHandler;
         private static int busy = 0;
-        public class PostDataStruct
+        Dictionary<string, string> mDictCookies;
+
+        private static WebInterface instance;
+        private WebInterface()
         {
-            public string localUser { get; set; }
-            public string localPassword { get; set; }
-            public string csrfmiddlewaretoken { get; set; }
+            mClient = new HttpClient();
+            mCookieContainer = new CookieContainer();
+            mHandler = new HttpClientHandler();
+            mHandler.CookieContainer = mCookieContainer;
+            mClient.BaseAddress = new Uri(Constants.baseIP + ":" + Constants.basePort.ToString());
+            mDictCookies = new Dictionary<string, string>();
+
         }
 
-        public WebInterface()
+        public static WebInterface Instance
         {
-
-        }
-
-
-        public async Task<string> GetCSRF(string sUrl)
-        {
-
-            sUrl = Constants.baseIP + ":" + Constants.basePort.ToString() + sUrl;
-            string csrftoken = "";
-            CookieContainer c2 = new CookieContainer();
-            var baseAddress = new Uri(sUrl);
-            using (var handler = new HttpClientHandler() { CookieContainer = c2 })
-            using (var client2 = new HttpClient(handler) { BaseAddress = baseAddress })
+            get
             {
-                try
+                if (instance == null)
                 {
-                    client2.Timeout = new TimeSpan(0, 0, 0, 30);
-                    var result = await client2.GetAsync(sUrl);
+                    instance = new WebInterface();
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return "error";
-                }
-                try
-                {
-                    var responseCookies = c2.GetCookies(baseAddress);
-                    csrftoken = responseCookies["csrftoken"].Value;
-                }
-                catch (Exception e2)
-                {
-                    Console.WriteLine(e2.Message);
-                }
-                return csrftoken;
-
+                return instance;
             }
         }
+        public async Task GetCSRF()
+        {
+            var a = new HttpClient();
+            string sUrl = Constants.baseIP + ":" + Constants.basePort.ToString() + "/";
+            mClient.BaseAddress = new Uri(sUrl);
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                mClient.Timeout = new TimeSpan(0, 0, 0, 30);
+                response = await mClient.GetAsync(sUrl);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            HandleResponse(response);
 
+            return;
+
+
+        }
+        public void SetAuthHeader(string user)
+        {
+            var authData = string.Format("{0}:{1}", user, "");
+            var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
+
+            mClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+        }
         public async Task<Dictionary<string, string>> MakeGetRequest(string sUrl, Dictionary<string, string> data)
         {
             Dictionary<string, string> responsePayload = new Dictionary<string, string>();
@@ -72,44 +85,40 @@ namespace ZarizNavigation
                 responsePayload["error"] = "busy";
                 return responsePayload;
             }
-
-            if (mCSRF == string.Empty)
-            {
-                string sCSRFURL = "";
-                mCSRF = await GetCSRF(sCSRFURL);
-                if (mCSRF == "error")
-                {
-                    responsePayload["success"] = "false";
-                    responsePayload["error"] = "NoConnection";
-                    mCSRF = string.Empty;
-                    Interlocked.Exchange(ref busy, 0);
-                    return responsePayload;
-                }
-            }
             try
             {
                 var baseAddress = new Uri(Constants.baseIP + ":" + Constants.basePort.ToString() + sUrl);
-                var cookieContainer = new CookieContainer();
-                cookieContainer.Add(baseAddress, new Cookie("csrftoken", mCSRF));
+                //mCookieContainer.Add(baseAddress, new Cookie("csrftoken", mCSRF));
                 HttpResponseMessage response;
 
-                var postData = new FormUrlEncodedContent(data);
-                postData.Headers.Add("X-CSRFToken", mCSRF);
-                using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
-                using (var client = new HttpClient(handler) { BaseAddress = baseAddress, Timeout = new TimeSpan(0,0,30) })
-                {
 
-                    client.DefaultRequestHeaders.Add("Accept", "application/json");
-                    response = await client.PostAsync(baseAddress, postData);
+                if (mCSRF == string.Empty)
+                {
+                    await GetCSRF();
                 }
-                var responseContent = response.Content;
+
+                data.Add("csrfmiddlewaretoken", mCSRF);
+                var postData = new FormUrlEncodedContent(data);
+                //postData.Headers.Add("X-CSRFToken", mCSRF);
+                //mClient.BaseAddress = baseAddress;
+                //mHandler.CookieContainer = mCookieContainer; 
+
+                mClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                if (!mClient.DefaultRequestHeaders.Contains("Referer"))
+                    mClient.DefaultRequestHeaders.Add("Referer", Constants.baseIP);
+
+                response = await mClient.PostAsync(baseAddress, postData);
+
+                HandleResponse(response);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
 
                     var dictRes = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
                     dictRes.ToList().ForEach(x => responsePayload[x.Key] = x.Value); // merge dictionaries
-
+                    addOrUpdate(responsePayload, "success", "true");
                 }
                 else if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
@@ -125,5 +134,44 @@ namespace ZarizNavigation
             Interlocked.Exchange(ref busy, 0);
             return responsePayload;
         }
+
+        void HandleResponse(HttpResponseMessage response)
+        {
+            foreach (var h in response.Headers)
+            {
+                if (h.Key == "set-cookie")
+                {
+                    foreach (var hField in h.Value)
+                    {
+                        var sFields = hField.Split(';');
+                        var sCookieKeyValue = sFields[0].Split('=');
+                        Console.Write("Adding Cookie - {0},{1}", sCookieKeyValue[0], sCookieKeyValue[1]);
+                        mCookieContainer.Add(mClient.BaseAddress, new Cookie(sCookieKeyValue[0], sCookieKeyValue[1]));
+                        //mClient.DefaultRequestHeaders.Add("Cookie", sFields[0] + "=" + sFields[1]);
+                        addOrUpdate(mDictCookies, sCookieKeyValue[0], sCookieKeyValue[1]);
+                        if (sCookieKeyValue[0] == "csrftoken")
+                        {
+                            mCSRF = sCookieKeyValue[1];
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        static void addOrUpdate(Dictionary<string, string> dic, string key, string newValue)
+        {
+            string val;
+            if (dic.TryGetValue(key, out val))
+            {
+                // yay, value exists!
+                dic[key] = newValue;
+            }
+            else
+            {
+                // darn, lets add the value
+                dic.Add(key, newValue);
+            }
+        }
     }
+
 }

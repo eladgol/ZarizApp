@@ -81,6 +81,10 @@ namespace ZarizNavigation.Controls
             {
                 nEntry.Keyboard = KeyboardType;
             }
+            if (propertyName == TextProperty.PropertyName)
+            {
+                nEntry.Text = Text;
+            }
         }
         public LabelAndTextEntry()
         {

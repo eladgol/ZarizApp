@@ -118,7 +118,6 @@ namespace ZarizNavigation
 		}
         async Task<Dictionary<string, string>> SignUp(User user)
         {
-            WebInterface wI = new WebInterface();
             var values = new Dictionary<string, string>()
             {
                 {"localPassword", user.Password},
@@ -126,7 +125,7 @@ namespace ZarizNavigation
                 {"localEmail", user.Email}
             };
             bool bSuccess = false;
-            var res = await wI.MakeGetRequest("/signUp/", values);
+            var res = await WebInterface.Instance.MakeGetRequest("/signUp/", values);
             try
             {
                 bSuccess = (res["success"] == "true");
@@ -143,6 +142,7 @@ namespace ZarizNavigation
             bool bNewUser = false;
             if (bSuccess)
             {
+                WebInterface.Instance.SetAuthHeader(user.Username);
                 try
                 {
                     bNewUser = (res["isNewUser"] == "true");
